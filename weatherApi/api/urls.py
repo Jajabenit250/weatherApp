@@ -1,6 +1,10 @@
-from django.contrib import admin
 from django.urls import path
+from rest_framework import routers
+from django.conf.urls import include
+from .views import WeatherLogViewSets
 
+router = routers.DefaultRouter()
+router.register('weatherLogs', WeatherLogViewSets)
 urlpatterns = [
-    path('weather/', admin.site.urls),
+    path('', include(router.urls)),
 ]

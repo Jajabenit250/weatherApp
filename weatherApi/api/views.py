@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .serializers import WeatherLogSerializer
+from .models import WeatherLog
 
-# Create your views here.
+class WeatherLogViewSets(viewsets.ModelViewSet):
+    queryset = WeatherLog.objects.all()
+    serializer_class = (WeatherLogSerializer)
