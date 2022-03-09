@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import CurrentData from "../controllers/CurrentData";
+import { CurrentData, ComingDaysData } from "../controllers/CurrentData";
 
 const Current = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -43,7 +43,7 @@ export default class Dashboard extends Component {
               {" "}
               <CurrentData />{" "}
             </Current>
-            <ComingDays>xs=8</ComingDays>
+            <ComingDays> <ComingDaysData /> </ComingDays>
           </Grid>
           <Grid item xs={12} style={{ paddingRight: "15px" }} md={4} lg={4}>
             <PreviousSearch>xs=4</PreviousSearch>

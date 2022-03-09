@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
-
-export default class PreviousSearch extends Component {
+import { useSelector, useDispatch, connect } from "react-redux";
+export class PreviousSearch extends Component {
   render() {
     return (
       <div>previousSearch</div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+  };
+};
+
+export default connect(mapStateToProps, {})(PreviousSearch);
