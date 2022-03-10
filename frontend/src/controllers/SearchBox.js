@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useSelector, useDispatch, connect } from "react-redux";
+import { connect } from "react-redux";
+import { weatherDataAction } from "../redux/actions";
 
 const places = [
   { label: "Kigali" },
@@ -13,7 +14,17 @@ const places = [
   { label: "Toronto" },
 ];
 
-export class SearchBox extends Component {
+class SearchBox extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {};
+        weatherDataAction();
+      }
+      componentDidMount() {
+        console.log("-------");
+        weatherDataAction();
+      }
   render() {
     return (
       <div>
@@ -34,4 +45,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(SearchBox);
+const SearchBoxPage = connect(mapStateToProps, {weatherDataAction})(SearchBox);
+
+export default SearchBoxPage;

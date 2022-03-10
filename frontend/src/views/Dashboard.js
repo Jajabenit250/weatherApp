@@ -12,14 +12,6 @@ const Current = styled(Paper)(({ theme }) => ({
   height: "55vh",
 }));
 
-const PreviousSearch = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  height: "92vh",
-}));
-
 const ComingDays = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -38,15 +30,17 @@ export default class Dashboard extends Component {
           spacing={2}
           style={{ paddingTop: "10px", paddingLeft: "15px" }}
         >
-          <Grid item xs={12} md={8} lg={8}>
-            <Current>
+          <Grid item xs={12} md={12} lg={12}>
+            <Current elevation={0}>
               {" "}
               <CurrentData />{" "}
             </Current>
-            <ComingDays> <ComingDaysData /> </ComingDays>
           </Grid>
-          <Grid item xs={12} style={{ paddingRight: "15px" }} md={4} lg={4}>
-            <PreviousSearch>xs=4</PreviousSearch>
+          <Grid item xs={12} md={12} lg={12}>
+            <ComingDays elevation={0}>
+              {" "}
+              <ComingDaysData />{" "}
+            </ComingDays>
           </Grid>
         </Grid>
       </div>

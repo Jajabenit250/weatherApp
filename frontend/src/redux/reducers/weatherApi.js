@@ -9,7 +9,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: action.payload,
       };
-    case "WE_ERROR_STATUS":
+    case "ERROR_STATUS":
       return {
         ...state,
         data: action.payload,
