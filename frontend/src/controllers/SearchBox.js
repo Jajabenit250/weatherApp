@@ -1,56 +1,54 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import { connect } from "react-redux";
 import { weatherDataAction } from "../redux/actions";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 
-const places = [
-  { label: "Kigali" },
-  { label: "Iowa" },
-  { label: "New York" },
-  { label: "Ottawa" },
-  { label: "Colorado" },
-  { label: "Bujumbura" },
-  { label: "Toronto" },
-];
-
-class SearchBox extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-  render() {
-    return (
-      <div>
-        <Autocomplete
-          disablePortal
-          id="places-box"
-          options={places}
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Places"
-              onChange={(e) =>
-                this.props.weatherDataAction({ city: e.target.value })
-              }
-            />
-          )}
-          
-        />
-      </div>
-    );
-  }
+function SearchBox(props) {
+  const [cityData, setCityData] = React.useState("");
+  
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      props.weatherDataAction({
+        lat: position.coords.latitude,
+        lon: position.coords.longitude,
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [0]);
+  return (
+    <div>
+      <Grid container>
+        <Grid item md={8}>
+          {" "}
+          <TextField
+              sx={{ width: 300 }}
+                label="Places"
+                onChange={(e) => setCityData(e.target.value)}
+              />
+        </Grid>
+        <Grid item md={4}>
+          <Button
+            variant="contained"
+            onClick={() => props.weatherDataAction({ city: cityData })}
+          >
+            Search
+          </Button>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return { state };
 };
 
-const SearchBoxPage = connect(mapStateToProps, { weatherDataAction })(
-  SearchBox
-);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    weatherDataAction: (data) => dispatch(weatherDataAction(data)),
+  };
+};
 
-export default SearchBoxPage;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBox);

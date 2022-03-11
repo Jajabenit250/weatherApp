@@ -10,7 +10,7 @@ const dataKey = "48bb04903e728a76992fe87d39cdd706";
 
 export const weatherDataAction = (data) => async (dispatch) => {
   try {
-      console.log(data);
+    console.log(data);
     const weatherResp = await fetch(
       data.city
         ? `https://api.openweathermap.org/data/2.5/weather?q=${data.city}&appid=${dataKey}&units=metric`
@@ -18,13 +18,13 @@ export const weatherDataAction = (data) => async (dispatch) => {
     );
     const forecastRes = await fetch(
       data.city
-        ? `https://api.openweathermap.org/data/2.5/forecast?q=${data.city}&appid=${dataKey}&exclude=minutely&units=metric`
-        : `https://api.openweathermap.org/data/2.5/forecast?lat=${data.lat}&lon=${data.lon}&appid=${dataKey}&exclude=minutely&units=metric`
+        ? `https://api.openweathermap.org/data/2.5/forecast?q=${data.city}&appid=${dataKey}&exclude=minutely&exclude=hourly&units=metric`
+        : `https://api.openweathermap.org/data/2.5/forecast?lat=${data.lat}&lon=${data.lon}&appid=${dataKey}&exclude=minutely&exclude=hourly&units=metric`
     );
 
     const currentData = await weatherResp.json();
     const forecastData = await forecastRes.json();
-
+    console.log(forecastData);
     const formData = new FormData();
 
     formData.append("sessionDetails", savedSession);

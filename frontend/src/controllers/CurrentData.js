@@ -48,22 +48,23 @@ const ComingDaysResult = styled(Paper)(({ theme }) => ({
   borderRadius: "10px",
   backgroundColor: "skyblue",
 }));
-
+const today = new Date();
+const weekday = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 class Current extends Component {
   constructor(props) {
     super(props);
 
     this.state = {};
-    
   }
-  componentDidMount() {
-     navigator.geolocation.getCurrentPosition(function (position) {
-      this.props.weatherDataAction({
-        lat: position.coords.latitude,
-        lon: position.coords.longitude,
-      });
-    });
-  }
+
   render() {
     return (
       <div>
@@ -80,7 +81,8 @@ class Current extends Component {
                   component="div"
                   style={{ marginBottom: "-20px", marginLeft: "-10px" }}
                 >
-                  Kigali, Rwanda
+                  {this.props.weatherData.name} , {" "}
+                  {this.props.weatherData.sys.country}
                 </Typography>
 
                 <Grid container spacing={2}>
@@ -94,9 +96,9 @@ class Current extends Component {
                       elevation={0}
                     >
                       <img
-                        src={`http://openweathermap.org/img/w/09d.png`}
+                        src={`http://openweathermap.org/img/w/${this.props.weatherData.weather[0].icon}.png`}
                         style={{ height: "175px", width: "120px" }}
-                        alt= 'ico'
+                        alt="ico"
                       />
                     </Paper>
                   </Grid>
@@ -107,106 +109,113 @@ class Current extends Component {
                       component="div"
                       style={{ marginLeft: "5px" }}
                     >
-                      <p style={{ marginBottom: "-10px" }}>Tuesday,</p>
-                      <p style={{ marginTop: "1px", marginBottom: "-10px" }}>
-                        Time,
+                      <p style={{ marginBottom: "-10px" }}>
+                        {weekday[today.getDay()]},{" "}
                       </p>
                       <p style={{ marginTop: "2px", marginBottom: "-10px" }}>
-                        Rain
+                        {this.props.weatherData.weather[0].description}
                       </p>
                     </Typography>
                   </Grid>
                   <Grid item xs={4}>
                     <Typography
-                      variant="h1"
+                      variant="h2"
                       component="div"
                       style={{ marginTop: "45px" }}
                     >
-                      18&deg;
+                      {this.props.weatherData.main.temp}&deg;
                     </Typography>
                     <Typography
-                      variant="h7"
+                      variant="h6"
                       component="div"
                       style={{ marginTop: "-15px" }}
                     >
-                      feels like: 
+                      feels like: {this.props.weatherData.main.feels_like}
                     </Typography>
                     <Typography
                       variant="h6"
                       component="div"
                       style={{ marginTop: "5px" }}
                     >
-                      Winds :
+                      Wind Speed : {this.props.weatherData.wind.speed}
                     </Typography>
 
                     <Typography variant="h6" component="div">
-                      Humility :
+                      Humidity : {this.props.weatherData.main.humidity}
                     </Typography>
                   </Grid>
                 </Grid>
               </DataResult>
             </center>
           </Grid>
-          <Grid item xs={12} md={4} display={{ xs: "none", lg: "block" }} style={{ paddingRight: "5px" }}>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            display={{ xs: "none", lg: "block" }}
+            style={{ paddingRight: "5px" }}
+          >
             <TodayStats elevation={0}>
               <Typography variant="h5" gutterBottom component="div">
-                Tuesday Forecast
+              {weekday[today.getDay()]} Forecast
               </Typography>
-              <TodayWidget>
-                <Grid container>
-                  <Grid item xs={4}>
-                    <Paper
-                      style={{
-                        backgroundColor: "skyblue",
-                        opacity: "70%",
-                      }}
-                      elevation={0}
-                    >
-                      <img
-                        src={`http://openweathermap.org/img/w/09d.png`}
-                        style={{ height: "85px", width: "80px" }}
-                        alt= 'ico'
-                      />
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography
-                      variant="h4"
-                      component="div"
-                      style={{ marginTop: "10px" }}
-                    >
-                      18&deg;
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography variant="h6" component="div">
-                      1:00 AM
-                    </Typography>
-                    <Typography
-                      variant="h7"
-                      component="div"
-                      style={{ marginTop: "5px" }}
-                    >
-                      <WiStrongWind
-                        size={24}
-                        color="skyblue"
-                        style={{ paddingBottom: "-12px" }}
-                      />{" "}
-                      29 mph
-                    </Typography>
-                    <Typography variant="h7" component="div">
-                      <WiHumidity
-                        size={24}
-                        color="skyblue"
-                        style={{ paddingBottom: "-12px" }}
-                      />{" "}
-                      51%
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </TodayWidget>
-              <TodayWidget />
-              <TodayWidget />
+              {this.props.forecastData.list.slice(0, 3).map((i) => {
+                return (
+                  <TodayWidget>
+                    <Grid container>
+                      <Grid item xs={4}>
+                        <Paper
+                          style={{
+                            backgroundColor: "skyblue",
+                            opacity: "70%",
+                          }}
+                          elevation={0}
+                        >
+                          <img
+                            src={`http://openweathermap.org/img/w/${i.weather[0].icon}.png`}
+                            style={{ height: "85px", width: "80px" }}
+                            alt="ico"
+                          />
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography
+                          variant="h4"
+                          component="div"
+                          style={{ marginTop: "10px" }}
+                        >
+                          {i.main.temp}&deg;
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography variant="h7" component="div">
+                          {i.dt_txt}
+                        </Typography>
+                        <Typography
+                          variant="h7"
+                          component="div"
+                          style={{ marginTop: "5px" }}
+                        >
+                          <WiStrongWind
+                            size={24}
+                            color="skyblue"
+                            style={{ paddingBottom: "-12px" }}
+                          />{" "}
+                          {i.wind.speed}
+                        </Typography>
+                        <Typography variant="h7" component="div">
+                          <WiHumidity
+                            size={24}
+                            color="skyblue"
+                            style={{ paddingBottom: "-12px" }}
+                          />{" "}
+                          {i.main.humidity}%
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </TodayWidget>
+                );
+              })}
             </TodayStats>
           </Grid>
         </Grid>
@@ -217,7 +226,6 @@ class Current extends Component {
 }
 
 class ComingDays extends Component {
-    
   render() {
     return (
       <div
@@ -240,7 +248,7 @@ class ComingDays extends Component {
               <img
                 src={`http://openweathermap.org/img/w/09d.png`}
                 style={{ height: "120px", width: "100px" }}
-                alt= 'ico'
+                alt="ico"
               />
 
               <Typography
@@ -255,19 +263,13 @@ class ComingDays extends Component {
               <Grid container>
                 <Grid item xs={6}>
                   <KeyboardArrowDownIcon />
-                  <Typography
-                    variant="h6"
-                    component="div"
-                  >
+                  <Typography variant="h6" component="div">
                     18&deg;
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <KeyboardArrowUpIcon />
-                  <Typography
-                    variant="h6"
-                    component="div"
-                  >
+                  <Typography variant="h6" component="div">
                     18&deg;
                   </Typography>
                 </Grid>
@@ -290,13 +292,17 @@ class ComingDays extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
-    weatherData : state.weatherApi.data.currentData,
-    forecastData : state.weatherApi.data.forecastData,
+    weatherData: state.weatherApi.data ? state.weatherApi.data.currentData : "",
+    forecastData: state.weatherApi.data
+      ? state.weatherApi.data.forecastData
+      : "",
   };
 };
 
-export const ComingDaysData = connect(mapStateToProps, {weatherDataAction})(ComingDays);
-export const CurrentData = connect(mapStateToProps, {weatherDataAction})(Current);
-
+export const ComingDaysData = connect(mapStateToProps, { weatherDataAction })(
+  ComingDays
+);
+export const CurrentData = connect(mapStateToProps, { weatherDataAction })(
+  Current
+);
