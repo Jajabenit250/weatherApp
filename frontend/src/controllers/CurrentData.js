@@ -57,7 +57,12 @@ class Current extends Component {
     
   }
   componentDidMount() {
-     this.props.weatherDataAction();
+     navigator.geolocation.getCurrentPosition(function (position) {
+      this.props.weatherDataAction({
+        lat: position.coords.latitude,
+        lon: position.coords.longitude,
+      });
+    });
   }
   render() {
     return (
@@ -118,6 +123,13 @@ class Current extends Component {
                       style={{ marginTop: "45px" }}
                     >
                       18&deg;
+                    </Typography>
+                    <Typography
+                      variant="h7"
+                      component="div"
+                      style={{ marginTop: "-15px" }}
+                    >
+                      feels like: 
                     </Typography>
                     <Typography
                       variant="h6"
@@ -278,8 +290,11 @@ class ComingDays extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
-  return {};
+  console.log(state);
+  return {
+    weatherData : state.weatherApi.data.currentData,
+    forecastData : state.weatherApi.data.forecastData,
+  };
 };
 
 export const ComingDaysData = connect(mapStateToProps, {weatherDataAction})(ComingDays);

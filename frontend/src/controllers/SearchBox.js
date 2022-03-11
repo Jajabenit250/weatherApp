@@ -15,16 +15,11 @@ const places = [
 ];
 
 class SearchBox extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.state = {};
-        weatherDataAction();
-      }
-      componentDidMount() {
-        console.log("-------");
-        weatherDataAction();
-      }
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
   render() {
     return (
       <div>
@@ -33,7 +28,16 @@ class SearchBox extends Component {
           id="places-box"
           options={places}
           sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Places" />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Places"
+              onChange={(e) =>
+                this.props.weatherDataAction({ city: e.target.value })
+              }
+            />
+          )}
+          
         />
       </div>
     );
@@ -41,10 +45,12 @@ class SearchBox extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-  };
+  console.log(state);
+  return { state };
 };
 
-const SearchBoxPage = connect(mapStateToProps, {weatherDataAction})(SearchBox);
+const SearchBoxPage = connect(mapStateToProps, { weatherDataAction })(
+  SearchBox
+);
 
 export default SearchBoxPage;
