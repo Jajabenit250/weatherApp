@@ -24,7 +24,6 @@ export const weatherDataAction = (data) => async (dispatch) => {
 
     const currentData = await weatherResp.json();
     const forecastData = await forecastRes.json();
-    console.log(forecastData);
     const formData = new FormData();
 
     formData.append("sessionDetails", savedSession);
